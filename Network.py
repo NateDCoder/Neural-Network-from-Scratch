@@ -2,7 +2,7 @@ import numpy as np
 
 class Network():
     def __init__(self, layer_sizes):
-        self.LR = 0.01
+        self.LR = 0.001
         self.weights = []
         self.biases = []
         for i in range(len(layer_sizes)-1):

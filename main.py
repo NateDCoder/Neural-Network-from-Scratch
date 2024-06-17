@@ -17,16 +17,17 @@ y = preprocessing.minmax_scale(melbourne_data.Price)
 
 melbourne_features = ['Rooms', 'Bathroom', 'Landsize', 'BuildingArea', 'YearBuilt', 'Lattitude', 'Longtitude']
 
-X = melbourne_data[melbourne_features]
 
-X = preprocessing.minmax_scale(X)
+scaler = preprocessing.StandardScaler()
+X = scaler.fit_transform(melbourne_data[melbourne_features])
 
 train_X, val_x, train_y, val_y = train_test_split(X, y, random_state=0)
 train_y = np.reshape(train_y, (-1,1))
 val_y = np.reshape(val_y, (-1,1))
+
 # Batch Size
 M = len(train_X)
-# M = 20
+# M = 32
 
 model = Network([len(melbourne_features), 10, 1])
 data_errors = []
