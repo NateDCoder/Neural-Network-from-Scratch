@@ -26,21 +26,23 @@ train_y = np.reshape(train_y, (-1,1))
 val_y = np.reshape(val_y, (-1,1))
 # Batch Size
 M = len(train_X)
-
+# M = 20
 
 model = Network([len(melbourne_features), 10, 1])
 data_errors = []
 test_errors = []
-EPOCHS = 100
+EPOCHS = 1000
 for _ in range(EPOCHS):
-    activation, Z = model.forward(train_X.T)
+    # X is shape 4647 x 7
+    batch = np.random.randint(train_X.shape[0], size=M)
+    activation, Z = model.forward(train_X[batch, :].T)
     test_prediction, _ = model.forward(val_x.T)
-
-    data_errors.append(mean_absolute_error(train_y.T, activation[-1]))
+    data_errors.append(mean_absolute_error(train_y[batch, :].T, activation[-1]))
     test_errors.append(mean_absolute_error(val_y.T, test_prediction[-1]))
     
-    print(mean_absolute_error(train_y.T, activation[-1])*Price_Converter)
-    model.train(activation, Z, train_y.T, M, train_X)
+    print(mean_absolute_error(train_y[batch, :].T, activation[-1])*Price_Converter)
+    model.train(activation, Z, train_y[batch, :].T, M, train_X[batch, :])
+    # M+=1
 
 fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
@@ -60,3 +62,7 @@ plt.show()
 # 'Date', 'Distance', 'Postcode', 'Bedroom2', 'Bathroom', 'Car',
 # 'Landsize', 'BuildingArea', 'YearBuilt', 'CouncilArea', 'Lattitude',
 # 'Longtitude', 'Regionname', 'Propertycount'
+
+#345928.787508133
+#301205.2524428287
+#268016.3623971688
